@@ -3,15 +3,27 @@ const Empresa = require("../models/Empresa");
 //@desc        Consigue todas las empresas
 //@route       GET /api/v1/empresas
 //@access      Public
-exports.getEmpresas = (req, res, next) => {
-  res.status(200).json({ success: true, msg: "Muestra todas" });
+exports.getEmpresas = async (req, res, next) => {
+  try {
+    const empresas = await Empresa.find();
+
+    res.status(200).json({ success: true, data: bootcamps });
+  } catch (err) {
+    res.status(400).json({ success: false });
+  }
 };
 
 //@desc        Consigue una empresas
 //@route       GET /api/v1/empresas/:id
 //@access      Public
-exports.getEmpresa = (req, res, next) => {
-  res.status(200).json({ success: true, msg: "Muestra una" });
+exports.getEmpresa = async (req, res, next) => {
+  try {
+      const empresa = await Empresa.findById(req.params.id);
+
+      res.status(200).json({ success: true, data: empresa})
+  } catch (err) {
+      res.status(400).json({ success: false });
+  }
 };
 
 //@desc        Crea nueva empresas
@@ -25,7 +37,7 @@ exports.createEmpresa = async (req, res, next) => {
       success: true,
       data: empresa,
     });
-  } catch (error) {
+  } catch (err) {
     res.status(400).json({ success: false });
   }
 };
