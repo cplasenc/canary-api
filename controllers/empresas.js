@@ -18,11 +18,11 @@ exports.getEmpresas = async (req, res, next) => {
 //@access      Public
 exports.getEmpresa = async (req, res, next) => {
   try {
-      const empresa = await Empresa.findById(req.params.id);
+    const empresa = await Empresa.findById(req.params.id);
 
-      res.status(200).json({ success: true, data: empresa})
+    res.status(200).json({ success: true, data: empresa });
   } catch (err) {
-      res.status(400).json({ success: false });
+    res.status(400).json({ success: false });
   }
 };
 
@@ -45,13 +45,26 @@ exports.createEmpresa = async (req, res, next) => {
 //@desc        Actualiza una empresa
 //@route       PUT /api/v1/empresas/:id
 //@access      Public
-exports.updateEmpresa = (req, res, next) => {
-  res.status(200).json({ success: true, msg: "Actualiza" });
+exports.updateEmpresa = async (req, res, next) => {
+  try {
+    const empresa = await Empresa.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!empresa) {
+      return res.status(400).json({ success: false });
+    }
+
+    res.status(200).json({ success: true, data: empresa });
+  } catch (err) {
+    return res.status(400).json({ success: false });
+  }
 };
 
 //@desc        Elimina una empresas
 //@route       DELETE /api/v1/empresas/:id
 //@access      Public
-exports.deleteEmpresa = (req, res, next) => {
-  res.status(200).json({ success: true, msg: "Elimina" });
+exports.deleteEmpresa = async (req, res, next) => {
+
 };
