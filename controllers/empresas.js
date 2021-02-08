@@ -56,7 +56,7 @@ exports.updateEmpresa = async (req, res, next) => {
       return res.status(400).json({ success: false });
     }
 
-    res.status(200).json({ success: true, data: empresa });
+    res.status(200).json({ success: true, count: empresa.length, data: empresa });
   } catch (err) {
     return res.status(400).json({ success: false });
   }
@@ -66,5 +66,15 @@ exports.updateEmpresa = async (req, res, next) => {
 //@route       DELETE /api/v1/empresas/:id
 //@access      Public
 exports.deleteEmpresa = async (req, res, next) => {
-
+    try {
+        const empresa = await Empresa.findByIdAndDelete(req.params.id);
+    
+        if (!empresa) {
+          return res.status(400).json({ success: false });
+        }
+    
+        res.status(200).json({ success: true, data: {} });
+      } catch (err) {
+        return res.status(400).json({ success: false });
+      }
 };
