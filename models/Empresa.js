@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const EmpresaSchema = new mongoose.Schema(
   {
@@ -109,4 +110,10 @@ const EmpresaSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model('Empresas', EmpresaSchema);
+//slug
+EmpresaSchema.pre("save", function () {
+  this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+module.exports = mongoose.model("Empresas", EmpresaSchema);
