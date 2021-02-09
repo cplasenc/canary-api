@@ -38,9 +38,7 @@ exports.getEmpresa = async (req, res, next) => {
   } catch (err) {
     //res.status(400).json({ success: false });
     //custom error
-    next(
-      new ErrorResponse(`Empresa no encontrada con el id ${req.params.id}`, 404)
-    );
+    next(err);
   }
 };
 
@@ -58,7 +56,7 @@ exports.createEmpresa = async (req, res, next) => {
       data: empresa,
     });
   } catch (err) {
-    res.status(400).json({ success: false });
+    next(err);
   }
 };
 
@@ -75,14 +73,19 @@ exports.updateEmpresa = async (req, res, next) => {
     });
 
     if (!empresa) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(
+          `Empresa no encontrada con el id ${req.params.id}`,
+          404
+        )
+      );
     }
 
     res
       .status(200)
       .json({ success: true, count: empresa.length, data: empresa });
   } catch (err) {
-    return res.status(400).json({ success: false });
+    next(err);
   }
 };
 
@@ -96,11 +99,16 @@ exports.deleteEmpresa = async (req, res, next) => {
     const empresa = await Empresa.findByIdAndDelete(req.params.id);
 
     if (!empresa) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(
+          `Empresa no encontrada con el id ${req.params.id}`,
+          404
+        )
+      );
     }
 
     res.status(200).json({ success: true, data: {} });
   } catch (err) {
-    return res.status(400).json({ success: false });
+    next(err);
   }
 };
