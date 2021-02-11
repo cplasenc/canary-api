@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const slugify = require("slugify");
+const geocoder = require("../util/geocoder");
 
 const EmpresaSchema = new mongoose.Schema(
   {
@@ -113,6 +114,26 @@ const EmpresaSchema = new mongoose.Schema(
 //slug
 EmpresaSchema.pre("save", function () {
   this.slug = slugify(this.name, { lower: true });
+  next();
+});
+
+//Geocode y crear campo de ubicación
+EmpresaSchema.pre("save", async function (next) {
+  const loc = await geocoder.geocode(this.address);
+  this.location = {
+    type: 'Point',
+    coordinates: [loc[0].longitude, loc[0].latitude],
+    formattedAddress: loc[0].formattedAddress,
+    street: loc[0].streetName,
+    city: loc[0].city,
+    state: loc[0].stateCode,
+    zipcode: loc[0].zipcode,
+    country: loc[0].country
+  }
+
+  //No guardar la direccion en la BD
+  this.address = undefined;
+  
   next();
 });
 
