@@ -11,15 +11,38 @@ const asyncHandler = require("../middleware/async");
 exports.getOrganizers = asyncHandler(async (req, res, next) => {
   let query;
 
+  const requestQuery = { ...req.query };
+
+  //campos excluidos
+  const removeFields = ["select", "sort"];
+  removeFields.forEach((param) => delete requestQuery[param]);
+
+  //consulta (String)
   let queryString = JSON.stringify(req.query);
 
+  //genera operadores de mongoDB (gt ? greater than)
   queryString = queryString.replace(
     /\b(gt|gte|lt|in)\b/g,
     (match) => `$${match}`
   );
 
+  //Busca
   query = Organizer.find(JSON.parse(queryString));
 
+  if (req.query.select) {
+    const fields = req.query.select.split(",").join(" ");
+    query = query.select(fields);
+  }
+
+  //sort
+  if (req.query.sort) {
+    const sortBy = req.query.sort.split(',').join(' ');
+    query = query.sort(sortBy);
+  } else {
+    query = query.sort('-createdAt');
+  }
+
+  //ejecuta la consulta
   const organizers = await query;
 
   res.status(200).json({ success: true, data: organizers });

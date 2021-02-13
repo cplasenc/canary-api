@@ -27,7 +27,7 @@ const organizers = JSON.parse(
 //importa a la base de datos
 const importData = async () => {
     try {
-        await Organizer.create(empresas);
+        await Organizer.create(organizers);
         console.log('Importado correctamente');
         process.exit();
     } catch (err) {
