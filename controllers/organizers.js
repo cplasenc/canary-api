@@ -9,7 +9,18 @@ const asyncHandler = require("../middleware/async");
  * @access      Public
  */
 exports.getOrganizers = asyncHandler(async (req, res, next) => {
-  const organizers = await Organizer.find();
+  let query;
+
+  let queryString = JSON.stringify(req.query);
+
+  queryString = queryString.replace(
+    /\b(gt|gte|lt|in)\b/g,
+    (match) => `$${match}`
+  );
+
+  query = Organizer.find(JSON.parse(queryString));
+
+  const organizers = await query;
 
   res.status(200).json({ success: true, data: organizers });
 });
