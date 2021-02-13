@@ -1,5 +1,6 @@
 const Organizer = require("../models/Organizer");
 const ErrorResponse = require("../util/errorResponse");
+const geocoder = require("../util/geocoder");
 const asyncHandler = require("../middleware/async");
 
 /**
@@ -23,7 +24,10 @@ exports.getOrganizer = asyncHandler(async (req, res, next) => {
 
   if (!organizer) {
     return next(
-      new ErrorResponse(`Organizador no encontrada con el id ${req.params.id}`, 404)
+      new ErrorResponse(
+        `Organizador no encontrada con el id ${req.params.id}`,
+        404
+      )
     );
   }
 
@@ -61,7 +65,9 @@ exports.updateOrganizer = asyncHandler(async (req, res, next) => {
     );
   }
 
-  res.status(200).json({ success: true, count: organizer.length, data: organizer });
+  res
+    .status(200)
+    .json({ success: true, count: organizer.length, data: organizer });
 });
 
 /**
@@ -79,4 +85,30 @@ exports.deleteOrganizer = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({ success: true, data: {} });
+});
+
+/**
+ * @desc        GET - consigue a los Organizadores dentro de un radio (km)
+ * @route       DELETE /api/v1/organizadores/radius/:zipcode/:distance
+ * @access      Private
+ */
+exports.getOrganizersInRadius = asyncHandler(async (req, res, next) => {
+  const { zipcode, distance } = req.params;
+
+  // GET lat/long de geocoder
+  const loc = await geocoder.geocode(zipcode);
+  const lat = loc[0].latitude;
+  const lng = loc[0].longitude;
+
+  //Calcular radio
+  const radius = distance / 6378;
+  const organizers = await Organizer.find({
+    location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+  });
+
+  res.status(200).json({
+    success: true,
+    count: organizers.length,
+    data: organizers,
+  });
 });

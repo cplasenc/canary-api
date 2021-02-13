@@ -5,11 +5,12 @@ const {
   createOrganizer: createOrganizer,
   updateOrganizer: updateOrganizer,
   deleteOrganizer: deleteOrganizer,
-  createOrganizer,
-  updateOrganizer,
-} = require("../controllers/organizer");
+  getOrganizersInRadius: getOrganizersInRadius
+} = require("../controllers/organizers");
 
 const router = express.Router();
+
+router.route('/radius/:zipcode/:distance').get(getOrganizersInRadius);
 
 router.route("./").get(getOrganizers).post(createOrganizer);
 
