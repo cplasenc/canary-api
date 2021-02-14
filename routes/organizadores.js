@@ -8,7 +8,13 @@ const {
   getOrganizersInRadius: getOrganizersInRadius
 } = require("../controllers/organizers");
 
+//Incluye otras rutas
+const actividadRouter = require('./actividades');
+
 const router = express.Router();
+
+//reenruta a otro recurso de rutas
+router.use('/:organizadorId/actividades', actividadRouter);
 
 router.route('/radius/:zipcode/:distance').get(getOrganizersInRadius);
 

@@ -11,7 +11,8 @@ dotenv.config({ path: './config/config.env' });
 connectDB();
 
 //route files
-const empresas = require('./routes/empresas');
+const organizadores = require('./routes/organizadores');
+const actividades = require('./routes/actividades');
 
 const app = express();
 
@@ -24,7 +25,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 //Mount routers
-app.use('/api/v1/empresas', empresas);
+app.use('/api/v1/organizadores', organizadores);
+app.use('/api/v1/actividades', actividades);
 
 app.use(errorHandler);
 
