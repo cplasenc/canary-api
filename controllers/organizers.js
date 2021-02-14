@@ -1,4 +1,4 @@
-const Organizer = require("../models/Organizer");
+const Organizador = require("../models/Organizador");
 const ErrorResponse = require("../util/errorResponse");
 const geocoder = require("../util/geocoder");
 const asyncHandler = require("../middleware/async");
@@ -27,7 +27,7 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
   );
 
   //Busca
-  query = Organizer.find(JSON.parse(queryString));
+  query = Organizador.find(JSON.parse(queryString));
 
   if (req.query.select) {
     const fields = req.query.select.split(",").join(" ");
@@ -47,7 +47,7 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 50;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  const total = await Organizer.countDocuments();
+  const total = await Organizador.countDocuments();
 
   query = query.skip(startIndex).limit(limit);
 
@@ -79,7 +79,7 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.getOrganizer = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizer.findById(req.params.id);
+  const organizer = await Organizador.findById(req.params.id);
 
   if (!organizer) {
     return next(
@@ -99,7 +99,7 @@ exports.getOrganizer = asyncHandler(async (req, res, next) => {
  * @access      Private
  */
 exports.createOrganizer = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizer.create(req.body);
+  const organizer = await Organizador.create(req.body);
 
   res.status(201).json({
     success: true,
@@ -113,7 +113,7 @@ exports.createOrganizer = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.updateOrganizer = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizer.findByIdAndUpdate(req.params.id, req.body, {
+  const organizer = await Organizador.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
   });
@@ -135,7 +135,7 @@ exports.updateOrganizer = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.deleteOrganizer = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizer.findByIdAndDelete(req.params.id);
+  const organizer = await Organizador.findByIdAndDelete(req.params.id);
 
   if (!organizer) {
     return next(
@@ -161,7 +161,7 @@ exports.getOrganizersInRadius = asyncHandler(async (req, res, next) => {
 
   //Calcular radio
   const radius = distance / 6378;
-  const organizers = await Organizer.find({
+  const organizers = await Organizador.find({
     location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
   });
 
