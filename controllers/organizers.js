@@ -14,7 +14,7 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
   const requestQuery = { ...req.query };
 
   //campos excluidos
-  const removeFields = ["select", "sort"];
+  const removeFields = ["select", "sort", 'limit'];
   removeFields.forEach((param) => delete requestQuery[param]);
 
   //consulta (String)
@@ -42,10 +42,35 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
     query = query.sort('-createdAt');
   }
 
+  //Paginación
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 50;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+  const total = await Organizer.countDocuments();
+
+  query = query.skip(startIndex).limit(limit);
+
   //ejecuta la consulta
   const organizers = await query;
 
-  res.status(200).json({ success: true, data: organizers });
+  //Resultado de la paginación
+  const pagination = {};
+  if(endIndex < total) {
+    pagination.next = {
+      page: page + 1,
+      limit
+    }
+  }
+
+  if(startIndex > 0) {
+    pagination.prev = {
+      page: page - 1,
+      limit
+    }
+  }
+
+  res.status(200).json({ success: true, count: organizers.count, pagination: pagination, data: organizers });
 });
 
 /**
