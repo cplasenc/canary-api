@@ -44,7 +44,7 @@ exports.getActividad = asyncHandler(async (req, res, next) => {
 
   if (!actividad) {
     return next(
-      new ErrorRespons(
+      new ErrorResponse (
         `No se ha encontrado una actividad con el id ${req.params.id}`
       ),
       404
@@ -69,7 +69,7 @@ exports.addActividad = asyncHandler(async (req, res, next) => {
 
   if (!organizador) {
     return next(
-      new ErrorRespons(
+      new ErrorResponse (
         `No se ha encontrado un organizador con el id ${req.params.organizadorId}`
       ),
       404
@@ -77,6 +77,35 @@ exports.addActividad = asyncHandler(async (req, res, next) => {
   }
 
   const actividad = await Actividad.create(req.body);
+
+  res.status(200).json({
+    success: true,
+    data: actividad,
+  });
+});
+
+/**
+ * @desc        PUT - Actualiza una actividad
+ * @route       PUT /api/v1/actividades/:id
+ * @access      Private
+ */
+exports.updateActividad = asyncHandler(async (req, res, next) => {
+
+  let actividad = await Actividad.findById(req.params.id);
+
+  if (!actividad) {
+    return next(
+      new ErrorResponse (
+        `No se ha encontrado una actividad con el id ${req.params.id}`
+      ),
+      404
+    );
+  }
+
+  actividad = await Actividad.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  })
 
   res.status(200).json({
     success: true,
