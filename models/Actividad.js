@@ -31,7 +31,7 @@ const ActividadSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  organizer: {
+  organizador: {
       type: mongoose.Schema.ObjectId,
       ref: 'Organizer',
       required: true

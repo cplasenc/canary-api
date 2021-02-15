@@ -15,7 +15,10 @@ exports.getActividad = asyncHandler(async (req, res, next) => {
   if (req.params.actividadId) {
     consulta = Actividad.find({ actividad: req.params.actividadId });
   } else {
-    consulta = Actividad.find();
+    consulta = Actividad.find().populate({
+      path: 'organizador',
+      select: 'nombre descripcion'
+    });
   }
 
   const actividad = await consulta;

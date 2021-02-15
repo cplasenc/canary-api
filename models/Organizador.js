@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const slugify = require("slugify");
 const geocoder = require("../util/geocoder");
 
-const EmpresaSchema = new mongoose.Schema(
+const OrganizadorSchema = new mongoose.Schema(
   {
-    name: {
+    nombre: {
       type: String,
       required: [true, "Por favor añade un nombre"],
       unique: true,
@@ -12,7 +12,7 @@ const EmpresaSchema = new mongoose.Schema(
       maxlength: [50, "El nombre no puede tener más de 50 caracteres"],
     },
     slug: String,
-    description: {
+    descripcion: {
       type: String,
       required: [true, "Por favor añade una descripción"],
       maxlength: [500, "La descripción no puede tener más de 500 caracteres"],
@@ -24,7 +24,7 @@ const EmpresaSchema = new mongoose.Schema(
         "Please use a valid URL with HTTP or HTTPS",
       ],
     },
-    phone: {
+    telefono: {
       type: String,
       maxlength: [20, "Phone number can not be longer than 20 characters"],
     },
@@ -112,29 +112,44 @@ const EmpresaSchema = new mongoose.Schema(
 );
 
 //slug
-EmpresaSchema.pre("save", function () {
+OrganizadorSchema.pre("save", function () {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
 
 //Geocode y crear campo de ubicación
-EmpresaSchema.pre("save", async function (next) {
+OrganizadorSchema.pre("save", async function (next) {
   const loc = await geocoder.geocode(this.address);
   this.location = {
-    type: 'Point',
+    type: "Point",
     coordinates: [loc[0].longitude, loc[0].latitude],
     formattedAddress: loc[0].formattedAddress,
     street: loc[0].streetName,
     city: loc[0].city,
     state: loc[0].stateCode,
     zipcode: loc[0].zipcode,
-    country: loc[0].country
-  }
+    country: loc[0].country,
+  };
 
   //No guardar la direccion en la BD
   this.address = undefined;
-  
+
   next();
 });
 
-module.exports = mongoose.model("Empresas", EmpresaSchema);
+//Elimina todas las actividades cuando un organizador es eliminado
+OrganizadorSchema.pre("remove", async function (next) {
+  console.log(`Actividades eliminadas del organizador ${this._id}`);
+  await this.model("Actividad").deleteMany({ organizador: this._id });
+  next();
+});
+
+//Reverse populate with virtuals
+OrganizadorSchema.virtual("actividades", {
+  ref: "Actividad",
+  localField: "_id",
+  foreignField: "organizador",
+  justOne: false,
+});
+
+module.exports = mongoose.model("Empresas", OrganizadorSchema);

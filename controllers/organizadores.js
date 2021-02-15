@@ -26,15 +26,16 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
     (match) => `$${match}`
   );
 
-  //Busca
-  query = Organizador.find(JSON.parse(queryString));
+  //busca
+  query = Organizador.find(JSON.parse(queryString)).populate('actividades');
 
+  //seleccionada los campos
   if (req.query.select) {
     const fields = req.query.select.split(",").join(" ");
     query = query.select(fields);
   }
 
-  //sort
+  //filtra
   if (req.query.sort) {
     const sortBy = req.query.sort.split(',').join(' ');
     query = query.sort(sortBy);
@@ -135,13 +136,15 @@ exports.updateOrganizer = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.deleteOrganizer = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizador.findByIdAndDelete(req.params.id);
+  const organizador = await Organizador.findById(req.params.id);
 
-  if (!organizer) {
+  if (!organizador) {
     return next(
       new ErrorResponse(`Empresa no encontrada con el id ${req.params.id}`, 404)
     );
   }
+
+  organizador.remove();
 
   res.status(200).json({ success: true, data: {} });
 });
