@@ -1,12 +1,12 @@
 const express = require("express");
 const {
-  getOrganizers: getOrganizers,
-  getOrganizer: getOrganizer,
-  createOrganizer: createOrganizer,
-  updateOrganizer: updateOrganizer,
-  deleteOrganizer: deleteOrganizer,
-  getOrganizersInRadius: getOrganizersInRadius
-} = require("../controllers/organizers");
+  getOrganizadores,
+  getOrganizador,
+  createOrganizador,
+  updateOrganizador,
+  deleteOrganizador,
+  getOrganizadorInRadius
+} = require("../controllers/organizadores");
 
 //Incluye otras rutas
 const actividadRouter = require('./actividades');
@@ -16,14 +16,14 @@ const router = express.Router();
 //reenruta a otro recurso de rutas
 router.use('/:organizadorId/actividades', actividadRouter);
 
-router.route('/radius/:zipcode/:distance').get(getOrganizersInRadius);
+router.route('/radius/:zipcode/:distance').get(getOrganizadorInRadius);
 
-router.route("./").get(getOrganizers).post(createOrganizer);
+router.route("./").get(getOrganizadores).post(createOrganizador);
 
 router
   .route("/:id")
-  .get(getOrganizer)
-  .put(updateOrganizer)
-  .delete(deleteOrganizer);
+  .get(getOrganizador)
+  .put(updateOrganizador)
+  .delete(deleteOrganizador);
 
 module.exports = router;

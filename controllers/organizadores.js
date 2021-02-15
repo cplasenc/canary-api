@@ -1,6 +1,6 @@
 const Organizador = require("../models/Organizador");
-const ErrorResponse = require("../util/errorResponse");
-const geocoder = require("../util/geocoder");
+const ErrorResponse = require("../utils/errorResponse");
+const geocoder = require("../utils/geocoder");
 const asyncHandler = require("../middleware/async");
 
 /**
@@ -8,7 +8,7 @@ const asyncHandler = require("../middleware/async");
  * @route       GET /api/v1/organizadores
  * @access      Public
  */
-exports.getOrganizers = asyncHandler(async (req, res, next) => {
+exports.getOrganizadores = asyncHandler(async (req, res, next) => {
   let query;
 
   const requestQuery = { ...req.query };
@@ -79,7 +79,7 @@ exports.getOrganizers = asyncHandler(async (req, res, next) => {
  * @route       GET /api/v1/organizadores/:id
  * @access      Public
  */
-exports.getOrganizer = asyncHandler(async (req, res, next) => {
+exports.getOrganizador = asyncHandler(async (req, res, next) => {
   const organizer = await Organizador.findById(req.params.id);
 
   if (!organizer) {
@@ -99,7 +99,7 @@ exports.getOrganizer = asyncHandler(async (req, res, next) => {
  * @route       POST /api/v1/empresas
  * @access      Private
  */
-exports.createOrganizer = asyncHandler(async (req, res, next) => {
+exports.createOrganizador = asyncHandler(async (req, res, next) => {
   const organizer = await Organizador.create(req.body);
 
   res.status(201).json({
@@ -113,7 +113,7 @@ exports.createOrganizer = asyncHandler(async (req, res, next) => {
  * @route       PUT /api/v1/empresas/:id
  * @access      Public
  */
-exports.updateOrganizer = asyncHandler(async (req, res, next) => {
+exports.updateOrganizador = asyncHandler(async (req, res, next) => {
   const organizer = await Organizador.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -135,7 +135,7 @@ exports.updateOrganizer = asyncHandler(async (req, res, next) => {
  * @route       DELETE /api/v1/empresas/:id
  * @access      Public
  */
-exports.deleteOrganizer = asyncHandler(async (req, res, next) => {
+exports.deleteOrganizador = asyncHandler(async (req, res, next) => {
   const organizador = await Organizador.findById(req.params.id);
 
   if (!organizador) {
@@ -154,7 +154,7 @@ exports.deleteOrganizer = asyncHandler(async (req, res, next) => {
  * @route       DELETE /api/v1/organizadores/radius/:zipcode/:distance
  * @access      Private
  */
-exports.getOrganizersInRadius = asyncHandler(async (req, res, next) => {
+exports.getOrganizadorInRadius = asyncHandler(async (req, res, next) => {
   const { zipcode, distance } = req.params;
 
   // GET lat/long de geocoder
