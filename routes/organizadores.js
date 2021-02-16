@@ -18,7 +18,7 @@ router.use('/:organizadorId/actividades', actividadRouter);
 
 router.route('/radius/:zipcode/:distance').get(getOrganizadorInRadius);
 
-router.route("./").get(getOrganizadores).post(createOrganizador);
+router.route("/").get(getOrganizadores).post(createOrganizador);
 
 router
   .route("/:id")

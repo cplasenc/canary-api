@@ -53,7 +53,7 @@ exports.getOrganizadores = asyncHandler(async (req, res, next) => {
   query = query.skip(startIndex).limit(limit);
 
   //ejecuta la consulta
-  const organizers = await query;
+  const organizadores = await query;
 
   //Resultado de la paginación
   const pagination = {};
@@ -71,7 +71,7 @@ exports.getOrganizadores = asyncHandler(async (req, res, next) => {
     }
   }
 
-  res.status(200).json({ success: true, count: organizers.count, pagination: pagination, data: organizers });
+  res.status(200).json({ success: true, count: organizadores.count, pagination: pagination, data: organizadores });
 });
 
 /**

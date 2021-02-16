@@ -4,7 +4,7 @@ const geocoder = require("../utils/geocoder");
 
 const OrganizadorSchema = new mongoose.Schema(
   {
-    nombre: {
+    name: {
       type: String,
       required: [true, "Por favor añade un nombre"],
       unique: true,
@@ -12,7 +12,7 @@ const OrganizadorSchema = new mongoose.Schema(
       maxlength: [50, "El nombre no puede tener más de 50 caracteres"],
     },
     slug: String,
-    descripcion: {
+    description: {
       type: String,
       required: [true, "Por favor añade una descripción"],
       maxlength: [500, "La descripción no puede tener más de 500 caracteres"],
@@ -61,13 +61,13 @@ const OrganizadorSchema = new mongoose.Schema(
       type: [String],
       required: true,
       enum: [
-        "Buceo",
-        "ejemplo2",
-        "ejemplo3",
-        "ejemplo4",
-        "ejemplo5",
-        "ejemplo6",
-      ],
+        'Web Development',
+        'Mobile Development',
+        'UI/UX',
+        'Data Science',
+        'Business',
+        'Other'
+      ]
     },
     averageRating: {
       type: Number,
@@ -112,7 +112,7 @@ const OrganizadorSchema = new mongoose.Schema(
 );
 
 //slug
-OrganizadorSchema.pre("save", function () {
+OrganizadorSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
 });
@@ -128,7 +128,7 @@ OrganizadorSchema.pre("save", async function (next) {
     city: loc[0].city,
     state: loc[0].stateCode,
     zipcode: loc[0].zipcode,
-    country: loc[0].country,
+    country: loc[0].countryCode,
   };
 
   //No guardar la direccion en la BD
@@ -152,4 +152,4 @@ OrganizadorSchema.virtual("actividades", {
   justOne: false,
 });
 
-module.exports = mongoose.model("Empresas", OrganizadorSchema);
+module.exports = mongoose.model("Organizador", OrganizadorSchema);

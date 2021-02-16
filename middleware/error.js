@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
 
   // mongoose error en la id
   if (err.name === "CastError") {
-    const message = `Empresa no encontrada con el id ${err.value}`;
+    const message = `Organizador no encontrada con el id ${err.value}`;
     error = new ErrorResponse(message, 404);
   }
 
