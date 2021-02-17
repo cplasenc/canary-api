@@ -24,18 +24,46 @@ const ActividadSchema = new mongoose.Schema({
     enum: ["facil", "media", "dificil"],
   },
   accesible: {
-      type: Boolean,
-      default: false
+    type: Boolean,
+    default: false,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
   organizador: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Organizer',
-      required: true
-  }
+    type: mongoose.Schema.ObjectId,
+    ref: "Organizador",
+    required: true,
+  },
 });
 
-module.exports = mongoose.model('Actividad', ActividadSchema);
+//método estático para conseguir el precio medio
+ActividadSchema.statics.getPrecioMedio = async function (organizacionId) {
+  const miArray = await this.aggregate([
+    {
+      $match: { organizador: organizadorId },
+    },
+    {
+      $group: { _id: "$organizador", precioMedio: { $avg: "$precio" } },
+    },
+  ]);
+
+  try {
+    await this.model("Organizador").findByAndUpdate(organizadorId, {
+      precioMedio: Math.ceil(miArray[0].precioMedio / 10) * 10,
+    });
+  } catch (err) {}
+};
+
+//Consigue el precio medio de una organización despues de añadir una actividad
+ActividadSchema.post("save", function () {
+  this.constructor.getPrecioMedio(this.organizador);
+});
+
+//Consigue el precio medio de una organización después de eliminar una actividad
+ActividadSchema.post("remove", function () {
+  this.constructor.getPrecioMedio(this.organizador);
+});
+
+module.exports = mongoose.model("Actividad", ActividadSchema);
