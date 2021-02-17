@@ -27,6 +27,10 @@ const ActividadSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  photo: {
+    type: String,
+    default: "no-photo.jpg",
+  },
   createdAt: {
     type: Date,
     default: Date.now,
@@ -39,7 +43,7 @@ const ActividadSchema = new mongoose.Schema({
 });
 
 //método estático para conseguir el precio medio
-ActividadSchema.statics.getPrecioMedio = async function (organizacionId) {
+ActividadSchema.statics.getPrecioMedio = async function (organizadorId) {
   const miArray = await this.aggregate([
     {
       $match: { organizador: organizadorId },

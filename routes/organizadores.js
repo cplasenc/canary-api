@@ -5,7 +5,8 @@ const {
   createOrganizador,
   updateOrganizador,
   deleteOrganizador,
-  getOrganizadorInRadius
+  getOrganizadorInRadius,
+  uploadImagenOrganizador
 } = require("../controllers/organizadores");
 
 //Incluye otras rutas
@@ -17,6 +18,8 @@ const router = express.Router();
 router.use('/:organizadorId/actividades', actividadRouter);
 
 router.route('/radius/:zipcode/:distance').get(getOrganizadorInRadius);
+
+router.route("/:id/photo").put(uploadImagenOrganizador);
 
 router.route("/").get(getOrganizadores).post(createOrganizador);
 

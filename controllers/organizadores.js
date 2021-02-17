@@ -174,3 +174,30 @@ exports.getOrganizadorInRadius = asyncHandler(async (req, res, next) => {
     data: organizers,
   });
 });
+
+/**
+ * @desc        Sube imagen para organizador
+ * @route       PUT /api/v1/organizadores/:id/photo
+ * @access      Private
+ */
+exports.uploadImagenOrganizador = asyncHandler(async (req, res, next) => {
+  const organizador = await Organizador.findById(req.params.id);
+
+  if (!organizador) {
+    return next(
+      new ErrorResponse(
+        `No se ha encontrado un organizador con el id ${req.params.id}`
+      ),
+      404
+    );
+  }
+
+  if(!req.files) {
+    return next(
+      new ErrorResponse(
+        'Añade una imagen'
+      ),
+      400  
+    );
+  }
+});
