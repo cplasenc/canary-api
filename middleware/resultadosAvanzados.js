@@ -8,11 +8,11 @@ const resultadosAvanzados = (model, populate) => async (req, res, next) => {
   removeFields.forEach((param) => delete requestQuery[param]);
 
   //consulta (String)
-  let queryString = JSON.stringify(req.query);
+  let queryString = JSON.stringify(requestQuery);
 
   //genera operadores de mongoDB (gt ? greater than)
   queryString = queryString.replace(
-    /\b(gt|gte|lt|in)\b/g,
+    /\b(gt|gte|lt|lte|in)\b/g,
     (match) => `$${match}`
   );
 
@@ -38,7 +38,7 @@ const resultadosAvanzados = (model, populate) => async (req, res, next) => {
   const limit = parseInt(req.query.limit, 10) || 50;
   const startIndex = (page - 1) * limit;
   const endIndex = page * limit;
-  const total = await model.countDocuments();
+  const total = await model.countDocuments(JSON.parse(queryString));
 
   query = query.skip(startIndex).limit(limit);
 
