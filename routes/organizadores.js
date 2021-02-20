@@ -1,4 +1,6 @@
 const express = require("express");
+const resultadosAvanzados = require('../middleware/resultadosAvanzados');
+const Organizador = require('../models/Organizador');
 const {
   getOrganizadores,
   getOrganizador,
@@ -21,7 +23,7 @@ router.route('/radius/:zipcode/:distance').get(getOrganizadorInRadius);
 
 router.route("/:id/photo").put(uploadImagenOrganizador);
 
-router.route("/").get(getOrganizadores).post(createOrganizador);
+router.route("/").get(resultadosAvanzados(Organizador, 'actividades'), getOrganizadores).post(createOrganizador);
 
 router
   .route("/:id")

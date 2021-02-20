@@ -12,24 +12,18 @@ const path = require("path");
  * @access      Public
  */
 exports.getActividades = asyncHandler(async (req, res, next) => {
-  let consulta;
-
   if (req.params.actividadId) {
-    consulta = Actividad.find({ actividad: req.params.actividadId });
-  } else {
-    consulta = Actividad.find().populate({
-      path: "organizador",
-      select: "nombre descripcion",
+    const actividades = await Actividad.find({
+      actividad: req.params.actividadId,
     });
+    return res.status(200).json({
+      success: true,
+      count: actividades.length,
+      data: actividades,
+    });
+  } else {
+    res.status(200).json(res.resultadosAvanzados);
   }
-
-  const actividad = await consulta;
-
-  res.status(200).json({
-    success: true,
-    count: actividad.length,
-    data: actividad,
-  });
 });
 
 /**
@@ -40,7 +34,7 @@ exports.getActividades = asyncHandler(async (req, res, next) => {
 exports.getActividad = asyncHandler(async (req, res, next) => {
   const actividad = await Actividad.findById(req.params.id).populate({
     path: "organizador",
-    select: "descripcion",
+    select: "name description",
   });
 
   if (!actividad) {
@@ -189,7 +183,7 @@ exports.uploadImagenActividad = asyncHandler(async (req, res, next) => {
 
     res.status(200).json({
       success: true,
-      data: imagen.name
+      data: imagen.name,
     });
   });
 });

@@ -1,4 +1,6 @@
 const express = require("express");
+const Actividad = require("../models/Actividad");
+const resultadosAvanzados = require("../middleware/resultadosAvanzados");
 const {
   getActividades,
   getActividad,
@@ -10,7 +12,16 @@ const {
 
 const router = express.Router({ mergeParams: true });
 
-router.route("/").get(getActividades).post(addActividad);
+router
+  .route("/")
+  .get(
+    resultadosAvanzados(Actividad, {
+      path: "actividad",
+      select: "name description",
+    }),
+    getActividades
+  )
+  .post(addActividad);
 
 router
   .route("/:id")
