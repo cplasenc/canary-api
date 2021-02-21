@@ -3,8 +3,8 @@ const dotenv = require("dotenv");
 const morgan = require("morgan");
 const connectDB = require("./config/db");
 const errorHandler = require("./middleware/error");
-const fileUpload = require('express-fileupload');
-const path = require('path');
+const fileUpload = require("express-fileupload");
+const path = require("path");
 
 /*carga las variables de configuración*/
 dotenv.config({ path: "./config/config.env" });
@@ -15,6 +15,7 @@ connectDB();
 //route files
 const organizadores = require("./routes/organizadores");
 const actividades = require("./routes/actividades");
+const auth = require("./routes/auth");
 
 const app = express();
 
@@ -30,11 +31,12 @@ if (process.env.NODE_ENV === "development") {
 app.use(fileUpload());
 
 //carpeta de imagenes
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 //Mount routers
 app.use("/api/v1/organizadores", organizadores);
 app.use("/api/v1/actividades", actividades);
+app.use("/api/v1/auth", auth);
 
 app.use(errorHandler);
 
