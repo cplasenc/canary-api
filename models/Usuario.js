@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const UsuarioSchema = new mongoose.Schema({
   nombre: {
@@ -32,4 +33,10 @@ const UsuarioSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Usuario', UsuarioSchema);
+//Encriptar contraseña con bycriptjs
+UsuarioSchema.pre("save", async function (next) {
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt);
+});
+
+module.exports = mongoose.model("Usuario", UsuarioSchema);
