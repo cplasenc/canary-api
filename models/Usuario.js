@@ -47,4 +47,9 @@ UsuarioSchema.methods.getSignedJWTToken = function () {
   });
 };
 
+//Comprar contraseña introducida con contraseña encriptada
+UsuarioSchema.methods.matchPassword = async function(enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+}
+
 module.exports = mongoose.model("Usuario", UsuarioSchema);
