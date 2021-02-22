@@ -15,13 +15,10 @@ exports.register = asyncHandler(async (req, res, next) => {
     nombre,
     email,
     password,
-    role
+    role,
   });
 
-  //Crea token
-  const token = usuario.getSignedJWTToken();
-
-  res.status(200).json({ success: true, token: token });
+  enviaRespuestaToken(user, 200, res);
 });
 
 /**
@@ -30,30 +27,45 @@ exports.register = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.login = asyncHandler(async (req, res, next) => {
-    const { email, password } = req.body;
-  
-    //Validar email y contraseña
-    if(!email || !password) {
-        return next(new ErrorResponse('Introduce un email y contraseña', 400));
-    }
+  const { email, password } = req.body;
 
-    //Comprobar usuario
-    const usuario = await Usuario.findOne({ email: email }).select('+password');
+  //Validar email y contraseña
+  if (!email || !password) {
+    return next(new ErrorResponse("Introduce un email y contraseña", 400));
+  }
 
-    if(!user) {
-        return next(new ErrorResponse('Error al iniciar sesión', 401));
-    }
+  //Comprobar usuario
+  const usuario = await Usuario.findOne({ email: email }).select("+password");
 
-    //comprobar contraseña
-    const isMatch = await usuario.matchPassword(password);
+  if (!user) {
+    return next(new ErrorResponse("Error al iniciar sesión", 401));
+  }
 
-    if(!isMatch) {
-        return next(new ErrorResponse('Error al iniciar sesión', 401));
-    }
-  
-    //Crea token
-    const token = usuario.getSignedJWTToken();
-  
-    res.status(200).json({ success: true, token: token });
+  //comprobar contraseña
+  const isMatch = await usuario.matchPassword(password);
+
+  if (!isMatch) {
+    return next(new ErrorResponse("Error al iniciar sesión", 401));
+  }
+
+  enviaRespuestaToken(user, 200, res);
+});
+
+//consigue token del modelo, crea cookie y envia respuesta
+const enviaRespuestaToken = (user, statusCode, res) => {
+  //Crea token
+  const token = usuario.getSignedJWTToken();
+
+  const options = {
+    expires: new Date(Date.now + 30 * 24 * 60 * 60 * 1000),
+    httpOnly: true,
+    secure: true
+  };
+
+
+
+  res.status(statusCode).cookie("token", token, options).json({
+    success: true,
+    token,
   });
-  
+};
