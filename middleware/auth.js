@@ -25,8 +25,18 @@ exports.protect = asyncHandler(async (req, res, next) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.usuario = await Usuario.findById(decoded.id);
     next();
-    
+
   } catch (err) {
     return next(new ErrorResponse("Acceso no autorizado", 401));
   }
 });
+
+//acceso según rol
+exports.authorize = (...roles) => {
+    return (req, res, next) => {
+        if(!roles.includes(req.user.role)) {
+            return next(new ErrorResponse(`Rol de usuario ${req.user.role} no está autorizado`, 403));
+        }
+        next();
+    }
+}

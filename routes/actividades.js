@@ -12,7 +12,7 @@ const {
 
 const router = express.Router({ mergeParams: true });
 
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 router
   .route("/")
@@ -23,13 +23,13 @@ router
     }),
     getActividades
   )
-  .post(protect, addActividad);
+  .post(protect, authorize('publisher', 'admin'), addActividad);
 
 router
   .route("/:id")
   .get(getActividad)
-  .put(protect, updateActividad)
-  .delete(protect, deleteActividad);
+  .put(protect, authorize('publisher', 'admin'), updateActividad)
+  .delete(protect, authorize('publisher', 'admin'), deleteActividad);
 
 router.route("/:id/photo").put(uploadImagenActividad);
 
