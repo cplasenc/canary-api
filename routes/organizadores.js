@@ -16,19 +16,21 @@ const actividadRouter = require('./actividades');
 
 const router = express.Router();
 
+const { protect } = require('../middleware/auth');
+
 //reenruta a otro recurso de rutas
 router.use('/:organizadorId/actividades', actividadRouter);
 
 router.route('/radius/:zipcode/:distance').get(getOrganizadorInRadius);
 
-router.route("/:id/photo").put(uploadImagenOrganizador);
+router.route("/:id/photo").put(protect, uploadImagenOrganizador);
 
-router.route("/").get(resultadosAvanzados(Organizador, 'actividades'), getOrganizadores).post(createOrganizador);
+router.route("/").get(resultadosAvanzados(Organizador, 'actividades'), getOrganizadores).post(protect, createOrganizador);
 
 router
   .route("/:id")
   .get(getOrganizador)
-  .put(updateOrganizador)
-  .delete(deleteOrganizador);
+  .put(protect, updateOrganizador)
+  .delete(protect, deleteOrganizador);
 
 module.exports = router;

@@ -59,13 +59,25 @@ const enviaRespuestaToken = (user, statusCode, res) => {
   const options = {
     expires: new Date(Date.now + 30 * 24 * 60 * 60 * 1000),
     httpOnly: true,
-    secure: true
+    secure: true,
   };
-
-
 
   res.status(statusCode).cookie("token", token, options).json({
     success: true,
     token,
   });
 };
+
+/**
+ * @desc        Consigue el usuario con sesión iniciada
+ * @route       GET /api/v1/auth/me
+ * @access      Private
+ */
+exports.getMe = asyncHandler(async (req, res, next) => {
+  const usuario = await Usuario.findById(req.usuario.id);
+
+  res.status(200).json({
+    success: true,
+    data: usuario,
+  });
+});
