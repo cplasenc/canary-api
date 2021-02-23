@@ -37,11 +37,29 @@ exports.getOrganizador = asyncHandler(async (req, res, next) => {
  * @access      Private
  */
 exports.createOrganizador = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizador.create(req.body);
+  //añadir usuario a req.body
+  req.body.usuario = req.usuario.id;
+
+  //Comprobar que solo publica un organizador
+  const organizadorPublicado = await Organizador.findOne({
+    user: req.usuario.id,
+  });
+
+  //si no es admin solo puede publicar uno
+  if (organizadorPublicado && req.usuario.role != "admin") {
+    return next(
+      new ErrorResponse(
+        `El usuario con id ${req.usuario.id} ya ha publicado un Organizador`,
+        400
+      )
+    );
+  }
+  
+  const organizador = await Organizador.create(req.body);
 
   res.status(201).json({
     success: true,
-    data: organizer,
+    data: organizador,
   });
 });
 
@@ -51,10 +69,14 @@ exports.createOrganizador = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.updateOrganizador = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizador.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+  const organizer = await Organizador.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
 
   if (!organizer) {
     return next(
@@ -129,12 +151,7 @@ exports.uploadImagenOrganizador = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if(!req.files) {
-    return next(
-      new ErrorResponse(
-        'Añade una imagen'
-      ),
-      400  
-    );
+  if (!req.files) {
+    return next(new ErrorResponse("Añade una imagen"), 400);
   }
 });
