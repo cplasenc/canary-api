@@ -59,6 +59,7 @@ exports.getActividad = asyncHandler(async (req, res, next) => {
  */
 exports.addActividad = asyncHandler(async (req, res, next) => {
   req.body.organizador = req.params.organizadorId;
+  req.body.usuario = req.usuario.id;
 
   const organizador = await await Organizador.findById(
     req.params.organizadorId
@@ -70,6 +71,17 @@ exports.addActividad = asyncHandler(async (req, res, next) => {
         `No se ha encontrado un organizador con el id ${req.params.organizadorId}`
       ),
       404
+    );
+  }
+
+  //comprueba que el usuario es el creador de la actividad
+  if (
+    organizador.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== "admin"
+  ) {
+    new ErrorResponse(
+      `Usuario ${req.usuario.id} no autorizado para añadir una actividad a este Organizador ${organizador._id}`,
+      401
     );
   }
 
@@ -98,6 +110,17 @@ exports.updateActividad = asyncHandler(async (req, res, next) => {
     );
   }
 
+  //comprueba que el usuario es el creador de la actividad
+  if (
+    actividad.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== "admin"
+  ) {
+    new ErrorResponse(
+      `Usuario ${req.usuario.id} no autorizado para editar esta actividad`,
+      401
+    );
+  }
+
   actividad = await Actividad.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -123,6 +146,17 @@ exports.deleteActividad = asyncHandler(async (req, res, next) => {
         `No se ha encontrado una actividad con el id ${req.params.id}`
       ),
       404
+    );
+  }
+
+  //comprueba que el usuario es el creador de la actividad
+  if (
+    actividad.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== "admin"
+  ) {
+    new ErrorResponse(
+      `Usuario ${req.usuario.id} no autorizado para eliminar esta actividad`,
+      401
     );
   }
 

@@ -99,7 +99,7 @@ const OrganizadorSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    user: {
+    usuario: {
       type: mongoose.Schema.ObjectId,
       ref: "Usuario",
       required: true,

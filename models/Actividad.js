@@ -40,6 +40,11 @@ const ActividadSchema = new mongoose.Schema({
     ref: "Organizador",
     required: true,
   },
+  usuario: {
+    type: mongoose.Schema.ObjectId,
+    ref: "Usuario",
+    required: true
+  }
 });
 
 //método estático para conseguir el precio medio
