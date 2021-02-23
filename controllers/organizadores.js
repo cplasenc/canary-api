@@ -54,7 +54,7 @@ exports.createOrganizador = asyncHandler(async (req, res, next) => {
       )
     );
   }
-  
+
   const organizador = await Organizador.create(req.body);
 
   res.status(201).json({
@@ -69,24 +69,31 @@ exports.createOrganizador = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.updateOrganizador = asyncHandler(async (req, res, next) => {
-  const organizer = await Organizador.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    }
-  );
+  let organizador = await Organizador.findById(req.params.id);
 
-  if (!organizer) {
-    return next(
-      new ErrorResponse(`Empresa no encontrada con el id ${req.params.id}`, 404)
+  if (!organizador) {
+    new ErrorResponse(`Empresa no encontrada con el id ${req.params.id}`, 404);
+  }
+
+  //comprueba que el usuario es el creador del Organizador
+  if (
+    organizador.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== "admin"
+  ) {
+    new ErrorResponse(
+      `Usuario ${req.params.id} no autorizado para actualizar esta información`,
+      401
     );
   }
 
+  organizador = await Organizador.findOneAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
   res
     .status(200)
-    .json({ success: true, count: organizer.length, data: organizer });
+    .json({ success: true, count: organizador.length, data: organizador });
 });
 
 /**
@@ -100,6 +107,17 @@ exports.deleteOrganizador = asyncHandler(async (req, res, next) => {
   if (!organizador) {
     return next(
       new ErrorResponse(`Empresa no encontrada con el id ${req.params.id}`, 404)
+    );
+  }
+
+  //comprueba que el usuario es el creador del Organizador
+  if (
+    organizador.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== "admin"
+  ) {
+    new ErrorResponse(
+      `Usuario ${req.params.id} no autorizado para eliminar esta información`,
+      401
     );
   }
 
@@ -148,6 +166,17 @@ exports.uploadImagenOrganizador = asyncHandler(async (req, res, next) => {
         `No se ha encontrado un organizador con el id ${req.params.id}`
       ),
       404
+    );
+  }
+
+  //comprueba que el usuario es el creador del Organizador
+  if (
+    organizador.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== "admin"
+  ) {
+    new ErrorResponse(
+      `Usuario ${req.params.id} no autorizado`,
+      401
     );
   }
 
