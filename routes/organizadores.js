@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const resultadosAvanzados = require('../middleware/resultadosAvanzados');
 const Organizador = require('../models/Organizador');
 const {
@@ -8,8 +8,8 @@ const {
   updateOrganizador,
   deleteOrganizador,
   getOrganizadorInRadius,
-  uploadImagenOrganizador
-} = require("../controllers/organizadores");
+  uploadImagenOrganizador,
+} = require('../controllers/organizadores');
 
 //Incluye otras rutas
 const actividadRouter = require('./actividades');
@@ -23,12 +23,17 @@ router.use('/:organizadorId/actividades', actividadRouter);
 
 router.route('/radius/:zipcode/:distance').get(getOrganizadorInRadius);
 
-router.route("/:id/photo").put(protect, authorize('publisher', 'admin'), uploadImagenOrganizador);
-
-router.route("/").get(resultadosAvanzados(Organizador, 'actividades'), getOrganizadores).post(protect, authorize('publisher', 'admin'), createOrganizador);
+router
+  .route('/:id/photo')
+  .put(protect, authorize('publisher', 'admin'), uploadImagenOrganizador);
 
 router
-  .route("/:id")
+  .route('/')
+  .get(resultadosAvanzados(Organizador, 'actividades'), getOrganizadores)
+  .post(protect, authorize('publisher', 'admin'), createOrganizador);
+
+router
+  .route('/:id')
   .get(getOrganizador)
   .put(protect, authorize('publisher', 'admin'), updateOrganizador)
   .delete(protect, authorize('publisher', 'admin'), deleteOrganizador);

@@ -1,6 +1,6 @@
-const Usuario = require("../models/Usuario");
-const ErrorResponse = require("../utils/errorResponse");
-const asyncHandler = require("../middleware/async");
+const Usuario = require('../models/Usuario');
+const ErrorResponse = require('../utils/errorResponse');
+const asyncHandler = require('../middleware/async');
 
 /**
  * @desc        Registrar usuario
@@ -31,21 +31,21 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   //Validar email y contraseña
   if (!email || !password) {
-    return next(new ErrorResponse("Introduce un email y contraseña", 400));
+    return next(new ErrorResponse('Introduce un email y contraseña', 400));
   }
 
   //Comprobar usuario
-  const usuario = await Usuario.findOne({ email: email }).select("+password");
+  const usuario = await Usuario.findOne({ email: email }).select('+password');
 
   if (!user) {
-    return next(new ErrorResponse("Error al iniciar sesión", 401));
+    return next(new ErrorResponse('Error al iniciar sesión', 401));
   }
 
   //comprobar contraseña
   const isMatch = await usuario.matchPassword(password);
 
   if (!isMatch) {
-    return next(new ErrorResponse("Error al iniciar sesión", 401));
+    return next(new ErrorResponse('Error al iniciar sesión', 401));
   }
 
   enviaRespuestaToken(user, 200, res);
@@ -73,8 +73,8 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
   const usuario = await Usuario.findOne({ email: req.body.email });
 
-  if(!usuario) {
-    return next(new ErrorResponse('No hay usuarios con ese email', 404))
+  if (!usuario) {
+    return next(new ErrorResponse('No hay usuarios con ese email', 404));
   }
 
   const resetToken = usuario.getResetPasswordToken();
@@ -98,7 +98,7 @@ const enviaRespuestaToken = (user, statusCode, res) => {
     secure: true,
   };
 
-  res.status(statusCode).cookie("token", token, options).json({
+  res.status(statusCode).cookie('token', token, options).json({
     success: true,
     token,
   });

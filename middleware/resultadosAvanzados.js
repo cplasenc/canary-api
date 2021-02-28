@@ -4,7 +4,7 @@ const resultadosAvanzados = (model, populate) => async (req, res, next) => {
   const requestQuery = { ...req.query };
 
   //campos excluidos
-  const removeFields = ["select", "sort", "limit", "page"];
+  const removeFields = ['select', 'sort', 'limit', 'page'];
   removeFields.forEach((param) => delete requestQuery[param]);
 
   //consulta (String)
@@ -21,16 +21,16 @@ const resultadosAvanzados = (model, populate) => async (req, res, next) => {
 
   //seleccionada los campos
   if (req.query.select) {
-    const fields = req.query.select.split(",").join(" ");
+    const fields = req.query.select.split(',').join(' ');
     query = query.select(fields);
   }
 
   //filtra
   if (req.query.sort) {
-    const sortBy = req.query.sort.split(",").join(" ");
+    const sortBy = req.query.sort.split(',').join(' ');
     query = query.sort(sortBy);
   } else {
-    query = query.sort("-createdAt");
+    query = query.sort('-createdAt');
   }
 
   //Paginación
