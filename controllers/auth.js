@@ -85,7 +85,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   //Crear URL para reiniciar contraseña
   const resetURL = `${req.protocol}://${req.get(
     'host'
-  )}/api/v1/resetpassword/${resetToken}`;
+  )}/api/v1/auth/resetpassword/${resetToken}`;
 
   const mensaje = `Haz click en este enlace para reinicar tu contraseña: ${resetURL}`;
 
@@ -128,3 +128,33 @@ const enviaRespuestaToken = (user, statusCode, res) => {
     token,
   });
 };
+
+/**
+ * @desc        Reiniciar contraseña
+ * @route       PUT /api/v1/auth/resetpassword/:resettoken
+ * @access      Public
+ */
+exports.resetPassword = asyncHandler(async (req, res, next) => {
+  //consigue el token encriptado
+  const resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(req.params.resetToken)
+    .digest('hex');
+
+  const usuario = await Usuario.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new ErrorResponse('Token no válido', 400));
+  }
+
+  //crea nueva contraseña
+  usuario.password = req.body.password;
+  usuario.resetPasswordToken = undefined;
+  usuario.resetPasswordExpire = undefined;
+  await usuario.save();
+
+  enviaRespuestaToken(user, 200, res);
+});
