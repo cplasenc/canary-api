@@ -1,6 +1,7 @@
 const Usuario = require('../models/Usuario');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const enviarEmail = require('../utils/enviarEmail');
 
 /**
  * @desc        Registrar usuario
@@ -80,6 +81,30 @@ exports.getMe = asyncHandler(async (req, res, next) => {
   const resetToken = usuario.getResetPasswordToken();
 
   await usuario.save({ validateBeforeSave: false });
+
+  //Crear URL para reiniciar contraseña
+  const resetURL = `${req.protocol}://${req.get(
+    'host'
+  )}/api/v1/resetpassword/${resetToken}`;
+
+  const mensaje = `Haz click en este enlace para reinicar tu contraseña: ${resetURL}`;
+
+  try {
+    await enviarEmail({
+      email: usuario.email,
+      subject: 'Token para reiniciar contraseña',
+      mensaje,
+    });
+
+    res.status(200).json({ success: true, data: 'Email enviado' });
+  } catch (err) {
+    usuario.resetPasswordToken = undefined;
+    usuario.resetPasswordExpire = undefined;
+
+    await usuario.save({ validateBeforeSave: false });
+
+    return next(new ErrorResponse('El email no ha podido ser enviado'), 500);
+  }
 
   res.status(200).json({
     success: true,
