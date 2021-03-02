@@ -67,11 +67,57 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @desc        Actualizar los detalles de usuario
+ * @route       PUT /api/v1/auth/updatedetails
+ * @access      Private
+ */
+exports.updateDetails = asyncHandler(async (req, res, next) => {
+  const camposAActializar = {
+    nombre: req.body.nombre,
+    email: req.body.email,
+  };
+
+  const usuario = await Usuario.findByIdAndUpdate(
+    req.usuario.id,
+    camposAActializar,
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+
+  res.status(200).json({
+    success: true,
+    data: usuario,
+  });
+});
+
+/**
+ * @desc        Actualiza la contraseña
+ * @route       PUT /api/v1/auth/updatepassword
+ * @access      Private
+ */
+exports.updatePassword = asyncHandler(async (req, res, next) => {
+  const usuario = await (await Usuario.findById(req.usuario.id)).isSelected('+password');
+
+  //Comprobar contraseña actual
+  if(!(await usuario.matchPassword(req.body.currentPassword))) {
+    return next(new ErrorResponse('Contraseña incorrecta', 401))
+  }
+
+  usuario.password = req.body.newPassword;
+  await user.save();
+
+  enviaRespuestaToken(usuario, 200, res);
+});
+
+
+/**
  * @desc        Reinicio de contraseña
  * @route       POST /api/v1/auth/forgotpassword
  * @access      Public
  */
-exports.getMe = asyncHandler(async (req, res, next) => {
+exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const usuario = await Usuario.findOne({ email: req.body.email });
 
   if (!usuario) {
