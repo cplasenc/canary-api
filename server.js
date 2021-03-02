@@ -17,6 +17,7 @@ connectDB();
 const organizadores = require("./routes/organizadores");
 const actividades = require("./routes/actividades");
 const auth = require("./routes/auth");
+const usuarios = require("./routes/usuarios");
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/v1/organizadores", organizadores);
 app.use("/api/v1/actividades", actividades);
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/users", usuarios);
 
 app.use(errorHandler);
 
