@@ -5,6 +5,7 @@ const {
   getOpinion,
   addOpinion,
   updateOpinion,
+  deleteOpinion,
 } = require('../controllers/opiniones');
 
 const router = express.Router({ mergeParams: true });
@@ -26,6 +27,7 @@ router
 router
   .route('/:id')
   .get(getOpinion)
-  .put(protect, authorize('usuario', 'admin'), updateOpinion);
+  .put(protect, authorize('usuario', 'admin'), updateOpinion)
+  .delete(protect, authorize('usuario', 'admin'), deleteOpinion)
 
 module.exports = router;

@@ -109,3 +109,35 @@ exports.updateOpinion = asyncHandler(async (req, res, next) => {
     data: opinion,
   });
 });
+
+/**
+ * @desc        Elimina una opinión
+ * @route       DELETE /api/v1/opiniones/:id
+ * @access      Private
+ */
+exports.deleteOpinion = asyncHandler(async (req, res, next) => {
+  const opinion = await Opinion.findById(req.params.id);
+
+  if (!opinion) {
+    return next(
+      new ErrorResponse(`No hay opinion con id ${req.params.id}`, 404)
+    );
+  }
+
+  //comprobacion - opinion editada pertenece a usuario
+  if (
+    opinion.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== 'admin'
+  ) {
+    return next(
+      new ErrorResponse('No tienes permisos para editar esta opinion', 401)
+    );
+  }
+
+  await opinion.remove();
+
+  res.status(200).json({
+    success: true,
+    data: {},
+  });
+});
