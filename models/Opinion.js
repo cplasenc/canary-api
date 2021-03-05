@@ -38,7 +38,7 @@ const OpinionSchema = new mongoose.Schema({
 OpinionSchema.index({ actividad: 1, usuario: 1 }, { unique: true });
 
 //método estático para conseguir la puntuación media de una actividad
-OpinionSchema.statics.getPuntuacionMedia = async function (organizadorId) {
+OpinionSchema.statics.getPuntuacionMedia = async function (actividadId) {
   const miArray = await this.aggregate([
     {
       $match: { actividad: actividadId },

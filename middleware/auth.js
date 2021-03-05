@@ -34,8 +34,8 @@ exports.protect = asyncHandler(async (req, res, next) => {
 //acceso según rol
 exports.authorize = (...roles) => {
     return (req, res, next) => {
-        if(!roles.includes(req.user.role)) {
-            return next(new ErrorResponse(`Rol de usuario ${req.user.role} no está autorizado`, 403));
+        if(!roles.includes(req.usuario.role)) {
+            return next(new ErrorResponse(`Rol de usuario ${req.usuario.role} no está autorizado`, 403));
         }
         next();
     }
