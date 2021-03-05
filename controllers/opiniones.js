@@ -23,3 +23,29 @@ exports.getOpiniones = asyncHandler(async (req, res, next) => {
     res.status(200).json(res.resultadosAvanzados);
   }
 });
+
+/**
+ * @desc        GET - Consigue una sola opinion
+ * @route       GET /api/v1/opiniones/:id
+ * @access      Public
+ */
+exports.getOpinion = asyncHandler(async (req, res, next) => {
+  const opinion = await Opinion.findById(req.params.id).populated({
+    path: 'actividad',
+    select: 'nombre descripcion',
+  });
+
+  if (!opinion) {
+    return next(
+      new ErrorResponse(
+        `No se ha encontrado opinión con la id ${req.params.id}`,
+        404
+      )
+    );
+  }
+
+  res.status(200).json({
+    success: true,
+    data: opinion,
+  });
+});
