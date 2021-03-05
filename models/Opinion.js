@@ -34,4 +34,7 @@ const OpinionSchema = new mongoose.Schema({
   },
 });
 
+//que solo se pueda enviar una opinion por actividad
+OpinionSchema.index({ actividad: 1, usuario: 1 }, { unique: true });
+
 module.exports = mongoose.model('Opinion', OpinionSchema);
