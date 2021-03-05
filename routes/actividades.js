@@ -13,6 +13,8 @@ const {
 const router = express.Router({ mergeParams: true });
 
 const { protect, authorize } = require('../middleware/auth');
+const opinionesRouter = require('./opiniones');
+router.use('/:actividadId/opiniones', opinionesRouter);
 
 router
   .route('/')

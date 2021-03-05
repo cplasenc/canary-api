@@ -1,7 +1,6 @@
 const Actividad = require("../models/Actividad");
 const Organizador = require("../models/Organizador");
 const ErrorResponse = require("../utils/errorResponse");
-const geocoder = require("../utils/geocoder");
 const asyncHandler = require("../middleware/async");
 const path = require("path");
 
