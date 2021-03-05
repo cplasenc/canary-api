@@ -33,7 +33,7 @@ exports.getActividades = asyncHandler(async (req, res, next) => {
 exports.getActividad = asyncHandler(async (req, res, next) => {
   const actividad = await Actividad.findById(req.params.id).populate({
     path: "organizador",
-    select: "name description",
+    select: "nombre descripcion",
   });
 
   if (!actividad) {

@@ -4,7 +4,7 @@ const geocoder = require("../utils/geocoder");
 
 const OrganizadorSchema = new mongoose.Schema(
   {
-    name: {
+    nombre: {
       type: String,
       required: [true, "Por favor añade un nombre"],
       unique: true,
@@ -12,7 +12,7 @@ const OrganizadorSchema = new mongoose.Schema(
       maxlength: [50, "El nombre no puede tener más de 50 caracteres"],
     },
     slug: String,
-    description: {
+    descripcion: {
       type: String,
       required: [true, "Por favor añade una descripción"],
       maxlength: [500, "La descripción no puede tener más de 500 caracteres"],
@@ -113,7 +113,7 @@ const OrganizadorSchema = new mongoose.Schema(
 
 //slug
 OrganizadorSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
+  this.slug = slugify(this.nombre, { lower: true });
   next();
 });
 

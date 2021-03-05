@@ -30,7 +30,7 @@ exports.getOpiniones = asyncHandler(async (req, res, next) => {
  * @access      Public
  */
 exports.getOpinion = asyncHandler(async (req, res, next) => {
-  const opinion = await Opinion.findById(req.params.id).populated({
+  const opinion = await Opinion.findById(req.params.id).populate({
     path: 'actividad',
     select: 'nombre descripcion',
   });

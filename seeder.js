@@ -11,6 +11,7 @@ dotenv.config({ path: './config/config.env'});
 const Organizador = require('./models/Organizador');
 const Actividad = require('./models/Actividad');
 const Usuario = require('./models/Usuario');
+const Opinion = require('./models/Opinion');
 
 //conecta a la BBDD
 mongoose.connect(process.env.MONGO_URI, {
@@ -33,6 +34,10 @@ const actividades = JSON.parse(
 const usuarios = JSON.parse(
     fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
 )
+//lee el archivo JSON users.json
+const opiniones = JSON.parse(
+    fs.readFileSync(`${__dirname}/_data/reviews.json`, 'utf-8')
+)
 
 //importa a la base de datos
 const importData = async () => {
@@ -40,6 +45,7 @@ const importData = async () => {
         await Organizador.create(organizadores);
         await Actividad.create(actividades);
         await Usuario.create(usuarios);
+        await Opinion.create(opiniones);
         console.log('Importado correctamente');
         process.exit();
     } catch (err) {
@@ -53,6 +59,7 @@ const deleteData = async () => {
         await Organizador.deleteMany();
         await Actividad.deleteMany();
         await Usuario.deleteMany();
+        await Opinion.deleteMany();
         console.log('Eliminado correctamente');
         process.exit();
     } catch (err) {

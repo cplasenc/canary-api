@@ -21,7 +21,7 @@ router
   .get(
     resultadosAvanzados(Actividad, {
       path: 'actividad',
-      select: 'name description',
+      select: 'nombre descripcion',
     }),
     getActividades
   )
