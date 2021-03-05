@@ -56,19 +56,53 @@ exports.getOpinion = asyncHandler(async (req, res, next) => {
  * @access      Private
  */
 exports.addOpinion = asyncHandler(async (req, res, next) => {
-  const opinion = await Opinion.findById(req.params.id).populate({
-    path: 'actividad',
-    select: 'nombre descripcion',
+  req.body.actividad = req.params.actividadId;
+  req.body.usuario = req.usuario.id;
+
+  const actividad = await Actividad.findById(req.params.actividadId);
+
+  if (!actividad) {
+    return next(
+      new ErrorResponse(`No hay activdad con id ${req.params.actividadId}`, 404)
+    );
+  }
+
+  const opinion = await Opinion.create(req.body);
+
+  res.status(201).json({
+    success: true,
+    data: opinion,
   });
+});
+
+/**
+ * @desc        Actualizar una opinión
+ * @route       PUT /api/v1/opiniones/:id
+ * @access      Private
+ */
+exports.updateOpinion = asyncHandler(async (req, res, next) => {
+  let opinion = await Opinion.findById(req.params.id);
 
   if (!opinion) {
     return next(
-      new ErrorResponse(
-        `No se ha encontrado opinión con la id ${req.params.id}`,
-        404
-      )
+      new ErrorResponse(`No hay opinion con id ${req.params.id}`, 404)
     );
   }
+
+  //comprobacion - opinion editada pertenece a usuario
+  if (
+    opinion.usuario.toString() !== req.usuario.id &&
+    req.usuario.role !== 'admin'
+  ) {
+    return next(
+      new ErrorResponse('No tienes permisos para editar esta opinion', 401)
+    );
+  }
+
+  opinion = await Opinion.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
 
   res.status(200).json({
     success: true,
