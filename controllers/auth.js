@@ -53,6 +53,23 @@ exports.login = asyncHandler(async (req, res, next) => {
 });
 
 /**
+ * @desc        Cerar sesión de usuario / eliminar cookie
+ * @route       GET /api/v1/auth/logout
+ * @access      Private
+ */
+exports.logout = asyncHandler(async (req, res, next) => {
+  res.cookie('token', 'none', {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+
+  res.status(200).json({
+    success: true,
+    data: usuario,
+  });
+});
+
+/**
  * @desc        Consigue el usuario con sesión iniciada
  * @route       GET /api/v1/auth/me
  * @access      Private
@@ -98,11 +115,13 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
  * @access      Private
  */
 exports.updatePassword = asyncHandler(async (req, res, next) => {
-  const usuario = await (await Usuario.findById(req.usuario.id)).isSelected('+password');
+  const usuario = await (await Usuario.findById(req.usuario.id)).isSelected(
+    '+password'
+  );
 
   //Comprobar contraseña actual
-  if(!(await usuario.matchPassword(req.body.currentPassword))) {
-    return next(new ErrorResponse('Contraseña incorrecta', 401))
+  if (!(await usuario.matchPassword(req.body.currentPassword))) {
+    return next(new ErrorResponse('Contraseña incorrecta', 401));
   }
 
   usuario.password = req.body.newPassword;
@@ -110,7 +129,6 @@ exports.updatePassword = asyncHandler(async (req, res, next) => {
 
   enviaRespuestaToken(usuario, 200, res);
 });
-
 
 /**
  * @desc        Reinicio de contraseña
