@@ -6,6 +6,7 @@ const errorHandler = require("./middleware/error");
 const fileUpload = require("express-fileupload");
 const path = require("path");
 const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
 
 /*carga las variables de configuración*/
 dotenv.config({ path: "./config/config.env" });
@@ -35,6 +36,9 @@ if (process.env.NODE_ENV === "development") {
 
 //Sube imagen
 app.use(fileUpload());
+
+//Sanitize data
+app.use(mongoSanitize());
 
 //carpeta de imagenes
 app.use(express.static(path.join(__dirname, "public")));
