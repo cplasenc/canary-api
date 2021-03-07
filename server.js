@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
 
 /*carga las variables de configuración*/
 dotenv.config({ path: './config/config.env' });
@@ -45,8 +47,19 @@ app.use(mongoSanitize());
 //headers de seguridad
 app.use(helmet());
 
-//evita cross-site scripting 
+//evita cross-site scripting
 app.use(xss());
+
+//limite de peiticones a la api
+const limite = rateLimit({
+  windowMs: 10 * 60 * 1000, //10 minutos
+  max: 100,
+});
+
+app.use(limite);
+
+//prevenir contaminacion de http
+app.use(hpp());
 
 //carpeta de imagenes
 app.use(express.static(path.join(__dirname, 'public')));
