@@ -1,6 +1,6 @@
 # Canary API
 
-> Backend API for Canary Islands' Tours & Activities
+> Backend API for Canary Islands' Tours & Activities directory app
 
 ## Usage
 
