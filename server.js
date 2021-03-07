@@ -11,6 +11,7 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
+const cors = require('cors');
 
 /*carga las variables de configuración*/
 dotenv.config({ path: './config/config.env' });
@@ -49,6 +50,9 @@ app.use(helmet());
 
 //evita cross-site scripting
 app.use(xss());
+
+//CORS
+app.use(cors());
 
 //limite de peiticones a la api
 const limite = rateLimit({
