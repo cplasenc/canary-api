@@ -1,22 +1,22 @@
 # Canary API
 
-> Backend API for Canary Islands' Tours & Activities directory app
+> Backend API para app-directorio de Actividades y Tours en las Islas Canarias
 
-## Usage
+## Uso
 
-Rename 'config/cofig.production.env" to "config/config.env" and update the settings.
+Renombrar 'config/cofig.production.env" a "config/config.env" y actualizar la configuración.
 
-## Install dependencies
+## Instalar dependencias
 ```
 npm install
 ```
 
-## Run app
+## Ejecutar
 ```
-# Run in dev mode
+# Ejecutar en modo desarrollo
 npm run dev
 
-# Run in prod mode
+# Ejecutar en modo producción
 npm start
 ```
 
