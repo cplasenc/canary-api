@@ -20,14 +20,7 @@ npm run dev
 npm start
 ```
 
-+++
-
-
-# canaryAPI
-
-Backend API para una app-directorio de Actividades y Tours en las Islas Canarias
-
-## Indices
+## Documentación
 
 * [Actividades](#actividades)
 
