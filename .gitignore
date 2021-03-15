@@ -2,4 +2,3 @@ node_modules/
 config/config.env
 project_resources/
 routes.txt
-_data/

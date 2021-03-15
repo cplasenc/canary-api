@@ -61,12 +61,12 @@ const OrganizadorSchema = new mongoose.Schema(
       type: [String],
       required: true,
       enum: [
-        'Web Development',
-        'Mobile Development',
-        'UI/UX',
-        'Data Science',
-        'Business',
-        'Other'
+        'Lorem ipsum dolor sit amet',
+        'Lorem ipsum dolor sit amet',
+        'Lorem ipsum dolor sit amet',
+        'Lorem ipsum dolor sit amet',
+        'Lorem ipsum dolor sit amet',
+        'Lorem ipsum dolor sit amet'
       ]
     },
     averageRating: {

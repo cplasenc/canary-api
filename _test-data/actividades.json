@@ -1,0 +1,101 @@
+[
+	{
+		"_id": "5d725a4a7b292f5f8ceff789",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 8,
+		"precio": 8000,
+		"dificultad": "facil",
+		"accesible": true,
+		"organizador": "5d713995b721c3bb38c1f5d0",
+		"usuario": "5d7a514b5d2c12c7449be045"
+	},
+	{
+		"_id": "5d725c84c4ded7bcb480eaa0",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 12,
+		"precio": 10000,
+		"dificultad": "media",
+		"accesible": true,
+		"organizador": "5d713995b721c3bb38c1f5d0",
+		"usuario": "5d7a514b5d2c12c7449be045"
+	},
+	{
+		"_id": "5d725cb9c4ded7bcb480eaa1",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 10,
+		"precio": 12000,
+		"dificultad": "media",
+		"accesible": true,
+		"organizador": "5d713a66ec8f2b88b8f830b8",
+		"usuario": "5d7a514b5d2c12c7449be046"
+	},
+	{
+		"_id": "5d725cd2c4ded7bcb480eaa2",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 12,
+		"precio": 10000,
+		"dificultad": "media",
+		"accesible": true,
+		"organizador": "5d713a66ec8f2b88b8f830b8",
+		"usuario": "5d7a514b5d2c12c7449be046"
+	},
+	{
+		"_id": "5d725ce8c4ded7bcb480eaa3",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 10,
+		"precio": 9000,
+		"dificultad": "facil",
+		"accesible": true,
+		"organizador": "5d725a037b292f5f8ceff787",
+		"usuario": "5c8a1d5b0190b214360dc031"
+	},
+	{
+		"_id": "5d725cfec4ded7bcb480eaa4",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 10,
+		"precio": 12000,
+		"dificultad": "media",
+		"accesible": false,
+		"organizador": "5d725a037b292f5f8ceff787",
+		"usuario": "5c8a1d5b0190b214360dc031"
+	},
+	{
+		"_id": "5d725cfec4ded7bcb480eaa5",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 8,
+		"precio": 8000,
+		"dificultad": "facil",
+		"accesible": false,
+		"organizador": "5d725a1b7b292f5f8ceff788",
+		"usuario": "5c8a1d5b0190b214360dc032"
+	},
+	{
+		"_id": "5d725cfec4ded7bcb480eaa6",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 6,
+		"precio": 5000,
+		"dificultad": "media",
+		"accesible": false,
+		"organizador": "5d725a1b7b292f5f8ceff788",
+		"usuario": "5c8a1d5b0190b214360dc032"
+	},
+	{
+		"_id": "5d725cfec4ded7bcb480eaa7",
+		"titulo": "Lorem ipsum dolor sit amet",
+		"descripcion": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec viverra feugiat mauris id viverra. Duis luctus ex sed facilisis ultrices. Curabitur scelerisque bibendum ligula, quis condimentum libero fermentum in. Aenean erat erat, aliquam in purus a, rhoncus hendrerit tellus. Donec accumsan justo in felis consequat sollicitudin. Fusce luctus mattis nunc vitae maximus. Curabitur semper felis eu magna laoreet scelerisque",
+		"duracion": 8,
+		"precio": 6000,
+		"dificultad": "media",
+		"accesible": false,
+		"organizador": "5d725a1b7b292f5f8ceff788",
+		"usuario": "5c8a1d5b0190b214360dc032"
+	}
+]
